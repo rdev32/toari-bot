@@ -30,9 +30,9 @@ export default {
     if (code.length > 6) {
       await interaction.reply({
         ephemeral: true,
-        content:
-          'Error: el codigo que haz proporcionado debe ser de 6 caracteres'
+        content: 'El codigo que haz proporcionado debe ser de 6 caracteres, vuelve a intentarlo.'
       })
+      throw new Error('Invalid code length')
     }
 
     const embed = new EmbedBuilder()
