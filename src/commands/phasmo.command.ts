@@ -18,26 +18,28 @@ export default {
     .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
   service: async (interaction: CommandInteraction) => {
     if (!interaction.isChatInputCommand()) {
-      throw new Error('Not a chat input command!')
+      throw new Error('No es un comando de chat!')
     }
 
     const code = interaction.options.getString('codigo')
 
     if (code === null) {
-      throw new Error('No contents provided')
+      throw new Error('Comando sin codigo de sala!')
     }
 
-    if (code.length > 6) {
-      await interaction.reply({
-        ephemeral: true,
-        content: 'El codigo que haz proporcionado debe ser de 6 caracteres, vuelve a intentarlo.'
-      })
-      throw new Error('Invalid code length')
+    if (code.length !== 6) {
+      throw new Error('El codigo debe tener 6 digitos')
+    }
+
+    if (isNaN(parseInt(code))) {
+      throw new Error('No haz ingresado un numero')
     }
 
     const embed = new EmbedBuilder()
       .setColor(0x86a6eb)
-      .setTitle(`${interaction.user.displayName} te ha invitado a una partida`)
+      .setTitle(
+        `${interaction.user.displayName} te ha invitado a jugar Phasmofobia`
+      )
       .setDescription(
         `Copia este codigo \`${code}\` para ingresar a la sala 😊`
       )
@@ -47,15 +49,15 @@ export default {
       .setTimestamp()
       .setFooter({ text: 'Creado por Toari Bot ❤️' })
 
+    await interaction.reply({ embeds: [embed] })
+
     setTimeout(async () => {
       embed.setColor(0xd2d5d9)
       embed.setTitle(
-        `La partida de ${interaction.user.displayName} ha finalizado`
+        `La partida de ${interaction.user.displayName} ha terminado`
       )
-      embed.setDescription('')
+      embed.setDescription('Pidele que cree una nueva partida')
       await interaction.editReply({ embeds: [embed] })
-    }, 7200000)
-
-    await interaction.reply({ embeds: [embed] })
+    }, 1800000)
   }
 }
