@@ -3,24 +3,33 @@ import { Events, CommandInteraction } from 'discord.js'
 export default {
   name: Events.InteractionCreate,
   controller: async (interaction: CommandInteraction) => {
-    if (!interaction.isChatInputCommand()) return
+    try {
+      if (!interaction.isChatInputCommand()) return
 
-		const command: Command = interaction.client.commands.get(interaction.commandName)
+      const command = interaction.client.commands.get(interaction.commandName)
 
-		if (!command) {
-			console.error(`No command matching ${interaction.commandName} was found.`)
-			return
-		}
+      if (!command) {
+        console.error(
+          `No command matching ${interaction.commandName} was found.`
+        )
+        return
+      }
 
-		try {
-			await command.service(interaction)
-		} catch (error: unknown) {
-			console.error(error instanceof Error ? error : error)
-			if (interaction.replied || interaction.deferred) {
-				await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true })
-			} else {
-				await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
-			}
-		}
+      await command.service(interaction)
+    } catch (error: unknown) {
+      const msg =
+        error instanceof Error
+          ? error.message
+          : `Error imprevisto ejecutando el comando`
+
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ content: msg, ephemeral: true })
+      }
+
+      await interaction.reply({
+        content: msg,
+        ephemeral: true
+      })
+    }
   }
 }

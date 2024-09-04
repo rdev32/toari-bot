@@ -5,7 +5,8 @@ export default {
     .setName('user')
     .setDescription('Replies with user info'),
   service: async (interaction: CommandInteraction) => {
-    await interaction.reply(`Your tag: ${interaction.user.tag}\nYour ID: ${interaction.user.id}`)
+    await interaction.reply(
+      `Your tag: ${interaction.user.tag}\nYour ID: ${interaction.user.id}`
+    )
   }
 }
-
