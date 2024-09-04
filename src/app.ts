@@ -4,12 +4,27 @@ import {
   Client,
   GatewayIntentBits,
   Collection,
-  CommandInteraction
+  CommandInteraction,
+  SlashCommandBuilder,
+  Events
 } from 'discord.js'
+
+declare global {
+  interface DiscordCommand {
+    data: SlashCommandBuilder
+    service: (interaction: CommandInteraction) => Promise<void>
+  }
+
+  interface DiscordEvent {
+    name: string
+    once?: boolean
+    controller: (interaction: CommandInteraction) => Promise<void>
+  }
+}
 
 declare module 'discord.js' {
   interface Client {
-    commands?: Collection<string, Command>
+    commands?: Collection<string, DiscordCommand>
   }
 }
 
@@ -32,7 +47,7 @@ const commandFiles: string[] = readdirSync(commandsPath).filter((file) =>
   try {
     for (const file of commandFiles) {
       const module = await import(`${commandsPath}/${file}`)
-      const command: Command = module.default
+      const command = module.default as DiscordCommand
 
       if (!command) {
         throw new Error(`Error importing ${file}`)
@@ -46,8 +61,8 @@ const commandFiles: string[] = readdirSync(commandsPath).filter((file) =>
         )
       }
     }
-  } catch (error) {
-    if (error instanceof Error) console.error(error)
+  } catch (error: unknown) {
+    if (error instanceof Error) console.error(error.message)
   }
 })()
 
@@ -60,7 +75,7 @@ const eventFiles: string[] = readdirSync(eventsPath).filter((file) =>
   try {
     for (const file of eventFiles) {
       const module = await import(`${eventsPath}/${file}`)
-      const event: Event = module.default
+      const event = module.default as DiscordEvent
 
       if (!event) {
         throw new Error(`Error importing ${file}`)
@@ -76,8 +91,8 @@ const eventFiles: string[] = readdirSync(eventsPath).filter((file) =>
         )
       }
     }
-  } catch (error) {
-    if (error instanceof Error) console.error(error)
+  } catch (error: unknown) {
+    if (error instanceof Error) console.error(error.message)
   }
 })()
 
