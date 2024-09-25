@@ -50,14 +50,5 @@ export default {
       .setFooter({ text: 'Creado por Toari Bot ❤️' })
 
     await interaction.reply({ embeds: [embed] })
-
-    setTimeout(async () => {
-      embed.setColor(0xd2d5d9)
-      embed.setTitle(
-        `La partida de ${interaction.user.displayName} ha terminado`
-      )
-      embed.setDescription('Pidele que cree una nueva partida')
-      await interaction.editReply({ embeds: [embed] })
-    }, 1800000)
   }
 }
