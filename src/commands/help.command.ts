@@ -22,6 +22,6 @@ export default {
         { name: '`/server`', value: 'Muestra informacion del servidor' }
       )
       .setFooter({ text: 'Ayuda de Toari Bot ❤️' })
-    await interaction.reply({ embeds: [embed] })
+    await interaction.reply({ embeds: [embed], ephemeral: true })
   }
 }
