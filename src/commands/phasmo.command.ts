@@ -44,7 +44,7 @@ export default {
         `Copia este codigo \`${code}\` para ingresar a la sala 😊`
       )
       .setThumbnail(
-        'https://cdn.discordapp.com/icons/435431947963990026/a_1a1155ca31aaab1ea861104bd16bc250.webp?size=160'
+        'https://raw.githubusercontent.com/rdev32/toari-bot/refs/heads/main/assets/phasmo.webp'
       )
       .setTimestamp()
       .setFooter({ text: 'Creado por Toari Bot ❤️' })
