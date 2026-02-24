@@ -5,9 +5,7 @@ import { join } from 'node:path'
 
 const commands = []
 const foldersPath = join(__dirname, '../commands')
-const commandFiles: string[] = readdirSync(foldersPath).filter((file) =>
-  file.endsWith('.js')
-)
+const commandFiles: string[] = readdirSync(foldersPath).filter((file) => file.endsWith('.js'))
 
 ;(async () => {
   try {
@@ -23,9 +21,7 @@ const commandFiles: string[] = readdirSync(foldersPath).filter((file) =>
       if ('data' in command && 'service' in command) {
         commands.push(command.data.toJSON())
       } else {
-        console.log(
-          `The command at ${file} is missing a required "data" or "service" property.`
-        )
+        console.log(`The command at ${file} is missing a required "data" or "service" property.`)
       }
 
       const rest = new REST({ version: '10' }).setToken(process.env.TOKEN)
@@ -33,10 +29,9 @@ const commandFiles: string[] = readdirSync(foldersPath).filter((file) =>
 
       console.log(`Submitting ${commands.length} application (/) commands.`)
 
-      const data = (await rest.put(
-        Routes.applicationCommands(process.env.CLIENT as string),
-        { body: commands }
-      )) as Array<RESTPutAPIApplicationCommandsResult>
+      const data = (await rest.put(Routes.applicationCommands(process.env.CLIENT as string), {
+        body: commands
+      })) as Array<RESTPutAPIApplicationCommandsResult>
 
       console.log(`Loaded ${data.length} application (/) commands.`)
     }

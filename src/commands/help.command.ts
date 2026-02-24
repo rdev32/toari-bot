@@ -1,9 +1,5 @@
 import { EmbedBuilder } from '@discordjs/builders'
-import {
-  CommandInteraction,
-  SlashCommandBuilder,
-  PermissionFlagsBits
-} from 'discord.js'
+import { CommandInteraction, SlashCommandBuilder, PermissionFlagsBits } from 'discord.js'
 
 export default {
   data: new SlashCommandBuilder()
@@ -19,7 +15,8 @@ export default {
         { name: '`/phasmo`', value: 'Crea un cuadro para mostrar una partida de Phasmofobia' },
         { name: '`/poke`', value: 'Le mandas un toque a alguien' },
         { name: '`/user`', value: 'Muestra informacion de un usuario' },
-        { name: '`/server`', value: 'Muestra informacion del servidor' }
+        { name: '`/server`', value: 'Muestra informacion del servidor' },
+        { name: '/report', value: 'Creara un ticket privado para conversar con los moderadores' }
       )
       .setFooter({ text: 'Ayuda de Toari Bot ❤️' })
     await interaction.reply({ embeds: [embed], ephemeral: true })
